@@ -28,8 +28,6 @@ const CreateNote = () => {
     navigate("/");
   };
 
-  console.log(errors);
-
   return (
     <>
       <TaskbarContainer></TaskbarContainer>
