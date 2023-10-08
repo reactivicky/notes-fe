@@ -28,6 +28,8 @@ const CreateNote = () => {
     navigate("/");
   };
 
+  console.log(errors);
+
   return (
     <>
       <TaskbarContainer></TaskbarContainer>
@@ -48,12 +50,18 @@ const CreateNote = () => {
         <DescriptionInput
           placeholder="Note Description"
           id="description"
-          {...register("description")}
+          {...register("description", {
+            required: "Description is required",
+            maxLength: {
+              value: 250,
+              message:
+                "Description should be less than or equal to 250 characters",
+            },
+          })}
         />
         {errors.description && (
           <ErrorText>{errors.description.message}</ErrorText>
         )}
-
         <Button type="submit">Create Note</Button>
       </FormStyled>
     </>
