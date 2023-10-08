@@ -28,9 +28,15 @@ const CreateNote = () => {
     navigate("/");
   };
 
+  const handleBackClick = () => {
+    navigate("/");
+  };
+
   return (
     <>
-      <TaskbarContainer></TaskbarContainer>
+      <TaskbarContainer>
+        <Button onClick={handleBackClick}>Back to home</Button>
+      </TaskbarContainer>
       <FormStyled onSubmit={handleSubmit(onSubmit)} noValidate>
         <TitleInput
           placeholder="Note Title"

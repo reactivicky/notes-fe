@@ -1,7 +1,8 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components";
 import Notes from "./pages/Notes";
-import CreateNote from "./pages/CreateNote";
+const CreateNote = lazy(() => import("./pages/CreateNote"));
 
 function App() {
   return (
@@ -9,7 +10,14 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Notes />} />
-        <Route path="/create-note" element={<CreateNote />} />
+        <Route
+          path="/create-note"
+          element={
+            <Suspense fallback="Loading...">
+              <CreateNote />
+            </Suspense>
+          }
+        />
       </Routes>
     </>
   );
