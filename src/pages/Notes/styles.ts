@@ -13,4 +13,15 @@ export const Note = styled.div`
   height: 300px;
   width: 300px;
   cursor: pointer;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
+
+export const NoteName = styled.h3`
+  font-size: 2rem;
+  font-weight: 400;
+`;
+
+export const NoteDescription = styled.p``;
