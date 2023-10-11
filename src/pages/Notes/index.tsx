@@ -1,16 +1,36 @@
+import { useQuery } from "@tanstack/react-query";
+import axios from "@/api/axiosInstance";
 import { Taskbar } from "@/components";
 import { NotesContainer, Note } from "./styles";
+import Loader from "@/components/Common/Loader";
 
-const notesArr = [1, 2, 3, 4, 5, 6, 7, 8];
+interface NoteInterface {
+  name: string;
+  description?: string;
+  _id: string;
+}
 
 const Notes = () => {
+  const fetchTodoList = async () => {
+    const res = await axios.get("/notes");
+    return res;
+  };
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["notes"],
+    queryFn: fetchTodoList,
+  });
+
+  const notesArr: NoteInterface[] = data?.data.data.notes ?? [];
+
   return (
     <>
       <Taskbar />
       <NotesContainer>
-        {notesArr.map((note) => (
-          <Note key={note} />
-        ))}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          notesArr.map((note) => <Note key={note._id} />)
+        )}
       </NotesContainer>
     </>
   );
