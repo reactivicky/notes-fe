@@ -6,6 +6,8 @@ export const NotesContainer = styled.section`
   grid-template-columns: repeat(4, 1fr);
   gap: 3rem;
   padding: 3rem;
+  max-height: 73vh;
+  overflow: auto;
 
   @media (max-width: 1400px) {
     grid-template-columns: repeat(3, 1fr);
@@ -45,4 +47,9 @@ export const PaginationContainer = styled.div`
   gap: 1rem;
   justify-content: center;
   align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
 `;
