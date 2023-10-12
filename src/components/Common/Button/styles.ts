@@ -8,4 +8,8 @@ export const ButtonStyled = styled.button`
   color: ${colors.white};
   font-size: 1rem;
   padding: 0.5rem 1rem;
+  :disabled {
+    background-color: ${colors.background};
+    color: ${colors.grey};
+  }
 `;

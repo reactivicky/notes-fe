@@ -6,7 +6,7 @@ export const NotesContainer = styled.section`
   grid-template-columns: repeat(4, 1fr);
   gap: 3rem;
   padding: 3rem;
-  max-height: 73vh;
+  max-height: 70vh;
   overflow: auto;
 
   @media (max-width: 1400px) {
@@ -22,7 +22,7 @@ export const NotesContainer = styled.section`
 
 export const Note = styled.div`
   background-color: ${colors.background};
-  height: 300px;
+  height: 250px;
   width: 100%;
   cursor: pointer;
   padding: 2rem;
@@ -52,4 +52,5 @@ export const PaginationContainer = styled.div`
   left: 0;
   right: 0;
   padding: 2rem;
+  background-color: ${colors.white};
 `;

@@ -4,4 +4,5 @@ export const colors = {
   borderColor: "#dedfe0",
   white: "#fff",
   error: "red",
+  grey: "grey",
 };
