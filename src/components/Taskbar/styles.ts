@@ -17,7 +17,6 @@ export const TaskbarContainer = styled.nav`
 export const FilterInput = styled.input`
   padding: 0.5rem;
   border: 1px solid ${colors.borderColor};
-  cursor: pointer;
   font-size: 1rem;
   :focus {
     outline: none;

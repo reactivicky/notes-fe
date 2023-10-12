@@ -1,12 +1,22 @@
-import { useState } from "react";
+import {
+  useState,
+  type Dispatch,
+  type SetStateAction,
+  type ChangeEvent,
+} from "react";
 import { FilterInput, StyledSelect, TaskbarContainer } from "./styles";
 import { SingleValue } from "react-select";
 import { useNavigate } from "react-router-dom";
 import { ButtonStyled } from "../Common/Button/styles";
+import { debounce } from "@/utils";
 
 interface OptionType {
   value: string;
   label: string;
+}
+
+interface TaskbarProps {
+  setFilterText: Dispatch<SetStateAction<string>>;
 }
 
 const options: OptionType[] = [
@@ -15,7 +25,7 @@ const options: OptionType[] = [
   { value: "alphabetically", label: "Sort alphabetically" },
 ];
 
-const Taskbar = () => {
+const Taskbar = ({ setFilterText }: TaskbarProps) => {
   const [sortValue, setSortValue] = useState<SingleValue<OptionType>>(
     options[0]
   );
@@ -23,9 +33,19 @@ const Taskbar = () => {
   const handleAddNote = () => {
     navigate("/create-note");
   };
+
+  const handleChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
+    setFilterText(e.target.value);
+  }, 1000);
+
   return (
     <TaskbarContainer>
-      <FilterInput type="text" placeholder="Filter notes" />
+      <FilterInput
+        type="text"
+        placeholder="Filter notes"
+        // value={filterText}
+        onChange={handleChange}
+      />
       <StyledSelect
         classNamePrefix={"Select"}
         options={options}

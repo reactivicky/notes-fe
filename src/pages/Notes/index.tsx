@@ -20,17 +20,20 @@ interface NoteInterface {
 
 const Notes = () => {
   const [page, setPage] = useState<number>(1);
-  const fetchTodoList = async (page: number) => {
+  const [filterText, setFilterText] = useState<string>("");
+
+  const fetchNotesList = async (page: number, filterText: string) => {
     const res = await axios.get("/notes", {
       params: {
         page,
+        text: filterText,
       },
     });
     return res;
   };
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["notes", page],
-    queryFn: () => fetchTodoList(page),
+    queryKey: ["notes", page, filterText],
+    queryFn: () => fetchNotesList(page, filterText),
   });
 
   const notesArr: NoteInterface[] = data?.data?.data?.notes ?? [];
@@ -55,7 +58,7 @@ const Notes = () => {
 
   return (
     <>
-      <Taskbar />
+      <Taskbar setFilterText={setFilterText} />
       <NotesContainer>
         {noNotes ? "Please add notes" : showNotes}
       </NotesContainer>
