@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "@/api/axiosInstance";
 import { Taskbar } from "@/components";
+import { SingleValue } from "react-select";
 import {
   NotesContainer,
   Note,
@@ -18,22 +19,54 @@ interface NoteInterface {
   _id: string;
 }
 
+export interface OptionType {
+  value: string;
+  label: string;
+}
+
+const options: OptionType[] = [
+  { value: "last_edited", label: "Sort by last edited" },
+  { value: "recently_created", label: "Sort by recently created" },
+  { value: "alphabetically", label: "Sort alphabetically" },
+];
+
 const Notes = () => {
   const [page, setPage] = useState<number>(1);
   const [filterText, setFilterText] = useState<string>("");
+  const [sortValue, setSortValue] = useState<SingleValue<OptionType>>(
+    options[0]
+  );
 
-  const fetchNotesList = async (page: number, filterText: string) => {
+  const fetchNotesList = async (
+    page: number,
+    filterText: string,
+    sortValue: string
+  ) => {
+    let sortBy: string = "";
+
+    switch (sortValue) {
+      case "last_edited":
+        sortBy = "-updatedAt";
+        break;
+      case "recently_created":
+        sortBy = "-createdAt";
+        break;
+      case "alphabetically":
+        sortBy = "name";
+        break;
+    }
     const res = await axios.get("/notes", {
       params: {
         page,
         text: filterText,
+        sort: sortBy,
       },
     });
     return res;
   };
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["notes", page, filterText],
-    queryFn: () => fetchNotesList(page, filterText),
+    queryKey: ["notes", page, filterText, sortValue!.value],
+    queryFn: () => fetchNotesList(page, filterText, sortValue!.value),
   });
 
   const notesArr: NoteInterface[] = data?.data?.data?.notes ?? [];
@@ -58,7 +91,12 @@ const Notes = () => {
 
   return (
     <>
-      <Taskbar setFilterText={setFilterText} />
+      <Taskbar
+        setFilterText={setFilterText}
+        sortValue={sortValue}
+        setSortValue={setSortValue}
+        options={options}
+      />
       <NotesContainer>
         {noNotes ? "Please add notes" : showNotes}
       </NotesContainer>
