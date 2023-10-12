@@ -34,6 +34,7 @@ const Notes = () => {
   });
 
   const notesArr: NoteInterface[] = data?.data?.data?.notes ?? [];
+  const isLastPage = data?.data?.end ?? false;
 
   const showNotes = isLoading ? (
     <Loader />
@@ -63,7 +64,9 @@ const Notes = () => {
           {"<"}
         </ButtonStyled>
         <p>{page}</p>
-        <ButtonStyled onClick={() => setPage(page + 1)}>{">"}</ButtonStyled>
+        <ButtonStyled disabled={isLastPage} onClick={() => setPage(page + 1)}>
+          {">"}
+        </ButtonStyled>
       </PaginationContainer>
     </>
   );
