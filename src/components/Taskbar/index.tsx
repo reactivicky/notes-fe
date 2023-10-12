@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FilterInput, StyledSelect, TaskbarContainer } from "./styles";
 import { SingleValue } from "react-select";
 import { useNavigate } from "react-router-dom";
-import Button from "../Common/Button";
+import { ButtonStyled } from "../Common/Button/styles";
 
 interface OptionType {
   value: string;
@@ -34,7 +34,7 @@ const Taskbar = () => {
           setSortValue(val as SingleValue<OptionType>)
         }
       />
-      <Button onClick={handleAddNote}>+ Add note</Button>
+      <ButtonStyled onClick={handleAddNote}>+ Add note</ButtonStyled>
     </TaskbarContainer>
   );
 };

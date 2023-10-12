@@ -1,8 +1,8 @@
 import { TaskbarContainer } from "@/components/Taskbar/styles";
 import { useForm } from "react-hook-form";
 import { DescriptionInput, ErrorText, FormStyled, TitleInput } from "./styles";
-import Button from "@/components/Common/Button";
 import { useNavigate } from "react-router-dom";
+import { ButtonStyled } from "@/components/Common/Button/styles";
 
 interface FormData {
   title: string;
@@ -35,7 +35,7 @@ const CreateNote = () => {
   return (
     <>
       <TaskbarContainer>
-        <Button onClick={handleBackClick}>Back to home</Button>
+        <ButtonStyled onClick={handleBackClick}>Back to home</ButtonStyled>
       </TaskbarContainer>
       <FormStyled onSubmit={handleSubmit(onSubmit)} noValidate>
         <TitleInput
@@ -66,7 +66,7 @@ const CreateNote = () => {
         {errors.description && (
           <ErrorText>{errors.description.message}</ErrorText>
         )}
-        <Button type="submit">Create Note</Button>
+        <ButtonStyled type="submit">Create Note</ButtonStyled>
       </FormStyled>
     </>
   );

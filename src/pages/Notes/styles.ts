@@ -2,16 +2,26 @@ import styled from "@emotion/styled";
 import { colors } from "@/theme";
 
 export const NotesContainer = styled.section`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 3rem;
-  flex-wrap: wrap;
   padding: 3rem;
+
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export const Note = styled.div`
   background-color: ${colors.background};
   height: 300px;
-  width: 300px;
+  width: 100%;
   cursor: pointer;
   padding: 2rem;
   display: flex;
@@ -24,4 +34,15 @@ export const NoteName = styled.h3`
   font-weight: 400;
 `;
 
-export const NoteDescription = styled.p``;
+export const NoteDescription = styled.p`
+  overflow: auto;
+  font-weight: 300;
+  line-height: 150%;
+`;
+
+export const PaginationContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+`;
