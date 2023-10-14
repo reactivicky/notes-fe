@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import { Navbar } from "./components";
 import Notes from "./pages/Notes";
 const NoteDetails = lazy(() => import("./pages/NoteDetails"));
@@ -27,6 +28,7 @@ function App() {
           }
         />
       </Routes>
+      <ToastContainer position={toast.POSITION.BOTTOM_CENTER} />
     </>
   );
 }

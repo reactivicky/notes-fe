@@ -1,5 +1,6 @@
 import { TaskbarContainer } from "@/components/Taskbar/styles";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { DescriptionInput, ErrorText, FormStyled, TitleInput } from "./styles";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "@/api/axiosInstance";
@@ -62,6 +63,7 @@ const NoteDetails = () => {
   const onSubmit = async (data: FormData) => {
     if (id) {
       updateMutation({ name: data.title, description: data.description });
+      toast.success("Note Edited");
     } else {
       const noteData = await createMutation({
         name: data.title,
