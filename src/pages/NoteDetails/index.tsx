@@ -9,7 +9,7 @@ interface FormData {
   description: string;
 }
 
-const CreateNote = () => {
+const NoteDetails = () => {
   const navigate = useNavigate();
 
   const {
@@ -72,4 +72,4 @@ const CreateNote = () => {
   );
 };
 
-export default CreateNote;
+export default NoteDetails;

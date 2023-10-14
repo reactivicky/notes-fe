@@ -12,6 +12,7 @@ import {
 import Loader from "@/components/Common/Loader";
 import { useState } from "react";
 import { ButtonStyled } from "@/components/Common/Button/styles";
+import { useNavigate } from "react-router-dom";
 
 interface NoteInterface {
   name: string;
@@ -31,6 +32,8 @@ const options: OptionType[] = [
 ];
 
 const Notes = () => {
+  const navigate = useNavigate();
+
   const [page, setPage] = useState<number>(1);
   const [filterText, setFilterText] = useState<string>("");
   const [sortValue, setSortValue] = useState<SingleValue<OptionType>>(
@@ -72,11 +75,15 @@ const Notes = () => {
   const notesArr: NoteInterface[] = data?.data?.data?.notes ?? [];
   const isLastPage = data?.data?.end ?? false;
 
+  const handleNoteClick = (id: string) => {
+    navigate(`/edit-note/${id}`);
+  };
+
   const showNotes = isLoading ? (
     <Loader />
   ) : (
     notesArr.map(({ _id, name, description }) => (
-      <Note key={_id}>
+      <Note key={_id} onClick={() => handleNoteClick(_id)}>
         <NoteName>{name}</NoteName>
         {description && <NoteDescription>{description}</NoteDescription>}
       </Note>

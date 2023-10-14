@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components";
 import Notes from "./pages/Notes";
-const CreateNote = lazy(() => import("./pages/CreateNote"));
+const NoteDetails = lazy(() => import("./pages/NoteDetails"));
 
 function App() {
   return (
@@ -14,7 +14,15 @@ function App() {
           path="/create-note"
           element={
             <Suspense fallback="Loading...">
-              <CreateNote />
+              <NoteDetails />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/edit-note/:id"
+          element={
+            <Suspense fallback="Loading...">
+              <NoteDetails />
             </Suspense>
           }
         />
