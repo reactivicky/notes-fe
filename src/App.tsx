@@ -28,7 +28,10 @@ function App() {
           }
         />
       </Routes>
-      <ToastContainer position={toast.POSITION.BOTTOM_CENTER} />
+      <ToastContainer
+        position={toast.POSITION.BOTTOM_CENTER}
+        autoClose={2000}
+      />
     </>
   );
 }

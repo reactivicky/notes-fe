@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "@/api/axiosInstance";
 import { Taskbar } from "@/components";
 import { SingleValue } from "react-select";
@@ -16,6 +16,7 @@ import Loader from "@/components/Common/Loader";
 import { useState } from "react";
 import { ButtonStyled } from "@/components/Common/Button/styles";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export interface NoteInterface {
   name: string;
@@ -70,7 +71,14 @@ const Notes = () => {
     });
     return res;
   };
-  const { data, isLoading, isError } = useQuery({
+
+  const deleteNote = async (id: string) => {
+    await axios.delete(`/notes/${id}`);
+  };
+
+  const { mutateAsync: deleteMutation } = useMutation(deleteNote);
+
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["notes", page, filterText, sortValue!.value],
     queryFn: () => fetchNotesList(page, filterText, sortValue!.value),
   });
@@ -80,6 +88,12 @@ const Notes = () => {
 
   const handleNoteClick = (id: string) => {
     navigate(`/edit-note/${id}`);
+  };
+
+  const handleDeleteNote = async (id: string) => {
+    await deleteMutation(id);
+    refetch();
+    toast.success("Note Deleted!");
   };
 
   const showNotes = isLoading ? (
@@ -93,7 +107,7 @@ const Notes = () => {
             <NoteBtn onClick={() => handleNoteClick(_id ?? "")}>
               <MdEdit />
             </NoteBtn>
-            <NoteBtn>
+            <NoteBtn onClick={() => handleDeleteNote(_id ?? "")}>
               <MdDelete />
             </NoteBtn>
           </NoteBtns>
