@@ -71,6 +71,7 @@ const NoteDetails = () => {
       });
       const noteId = noteData?.data?.data?.note?._id ?? "";
       navigate(`/edit-note/${noteId}`);
+      toast.success("Note Created");
     }
   };
 

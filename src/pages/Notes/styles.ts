@@ -24,7 +24,6 @@ export const Note = styled.div`
   background-color: ${colors.background};
   height: 250px;
   width: 100%;
-  cursor: pointer;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -40,6 +39,19 @@ export const NoteDescription = styled.p`
   overflow: auto;
   font-weight: 300;
   line-height: 150%;
+`;
+
+export const NoteBtns = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+export const NoteBtn = styled.button`
+  cursor: pointer;
+  background-color: ${colors.primaryLight};
+  border: none;
+  color: ${colors.white};
+  padding: 0.3rem 0.5rem;
 `;
 
 export const PaginationContainer = styled.div`

@@ -2,12 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "@/api/axiosInstance";
 import { Taskbar } from "@/components";
 import { SingleValue } from "react-select";
+import { MdDelete, MdEdit } from "react-icons/md";
 import {
   NotesContainer,
   Note,
   NoteName,
   NoteDescription,
   PaginationContainer,
+  NoteBtns,
+  NoteBtn,
 } from "./styles";
 import Loader from "@/components/Common/Loader";
 import { useState } from "react";
@@ -83,8 +86,18 @@ const Notes = () => {
     <Loader />
   ) : (
     notesArr.map(({ _id, name, description }) => (
-      <Note key={_id} onClick={() => handleNoteClick(_id ?? "")}>
-        <NoteName>{name}</NoteName>
+      <Note key={_id}>
+        <NoteName>
+          {name}{" "}
+          <NoteBtns>
+            <NoteBtn onClick={() => handleNoteClick(_id ?? "")}>
+              <MdEdit />
+            </NoteBtn>
+            <NoteBtn>
+              <MdDelete />
+            </NoteBtn>
+          </NoteBtns>
+        </NoteName>
         {description && <NoteDescription>{description}</NoteDescription>}
       </Note>
     ))
