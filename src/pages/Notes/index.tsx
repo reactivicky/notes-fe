@@ -14,7 +14,7 @@ import { useState } from "react";
 import { ButtonStyled } from "@/components/Common/Button/styles";
 import { useNavigate } from "react-router-dom";
 
-interface NoteInterface {
+export interface NoteInterface {
   name: string;
   description?: string;
   _id: string;

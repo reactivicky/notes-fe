@@ -1,8 +1,12 @@
 import { TaskbarContainer } from "@/components/Taskbar/styles";
 import { useForm } from "react-hook-form";
 import { DescriptionInput, ErrorText, FormStyled, TitleInput } from "./styles";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "@/api/axiosInstance";
 import { ButtonStyled } from "@/components/Common/Button/styles";
+import { useQuery } from "@tanstack/react-query";
+import Loader from "@/components/Common/Loader";
+import { type NoteInterface } from "../Notes";
 
 interface FormData {
   title: string;
@@ -11,15 +15,27 @@ interface FormData {
 
 const NoteDetails = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
 
+  const fetchNote = async (id?: string) => {
+    const note = await axios.get(`/notes/${id}`);
+    return note;
+  };
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["note", id],
+    queryFn: () => fetchNote(id),
+    enabled: !!id,
+  });
+  const noteData: NoteInterface | undefined = data?.data?.data?.note;
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      title: "",
-      description: "",
+      title: noteData?.name ?? "",
+      description: noteData?.description ?? "",
     },
   });
 
@@ -37,37 +53,41 @@ const NoteDetails = () => {
       <TaskbarContainer>
         <ButtonStyled onClick={handleBackClick}>Back to home</ButtonStyled>
       </TaskbarContainer>
-      <FormStyled onSubmit={handleSubmit(onSubmit)} noValidate>
-        <TitleInput
-          placeholder="Note Title"
-          type="text"
-          id="title"
-          {...register("title", {
-            required: "Title is required",
-            maxLength: {
-              value: 20,
-              message: "Title should be less than or equal to 20 characters",
-            },
-          })}
-        />
-        {errors.title && <ErrorText>{errors.title.message}</ErrorText>}
-        <DescriptionInput
-          placeholder="Note Description"
-          id="description"
-          {...register("description", {
-            required: "Description is required",
-            maxLength: {
-              value: 250,
-              message:
-                "Description should be less than or equal to 250 characters",
-            },
-          })}
-        />
-        {errors.description && (
-          <ErrorText>{errors.description.message}</ErrorText>
-        )}
-        <ButtonStyled type="submit">Create Note</ButtonStyled>
-      </FormStyled>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <FormStyled onSubmit={handleSubmit(onSubmit)} noValidate>
+          <TitleInput
+            placeholder="Note Title"
+            type="text"
+            id="title"
+            {...register("title", {
+              required: "Title is required",
+              maxLength: {
+                value: 20,
+                message: "Title should be less than or equal to 20 characters",
+              },
+            })}
+          />
+          {errors.title && <ErrorText>{errors.title.message}</ErrorText>}
+          <DescriptionInput
+            placeholder="Note Description"
+            id="description"
+            {...register("description", {
+              required: "Description is required",
+              maxLength: {
+                value: 250,
+                message:
+                  "Description should be less than or equal to 250 characters",
+              },
+            })}
+          />
+          {errors.description && (
+            <ErrorText>{errors.description.message}</ErrorText>
+          )}
+          <ButtonStyled type="submit">Create Note</ButtonStyled>
+        </FormStyled>
+      )}
     </>
   );
 };
