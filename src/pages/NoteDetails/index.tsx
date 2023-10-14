@@ -4,7 +4,7 @@ import { DescriptionInput, ErrorText, FormStyled, TitleInput } from "./styles";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "@/api/axiosInstance";
 import { ButtonStyled } from "@/components/Common/Button/styles";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import Loader from "@/components/Common/Loader";
 import { type NoteInterface } from "../Notes";
 
@@ -36,6 +36,15 @@ const NoteDetails = () => {
     return note;
   };
 
+  const updateNote = async ({ name, description }: NoteInterface) => {
+    await axios.patch(`/notes/${id}`, {
+      name,
+      description,
+    });
+  };
+
+  const { mutate } = useMutation(updateNote);
+
   const { data, isLoading } = useQuery({
     queryKey: ["note", id],
     queryFn: () => fetchNote(id),
@@ -43,8 +52,7 @@ const NoteDetails = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
-    navigate("/");
+    mutate({ name: data.title, description: data.description });
   };
 
   const handleBackClick = () => {
@@ -79,16 +87,18 @@ const NoteDetails = () => {
             {...register("description", {
               required: "Description is required",
               maxLength: {
-                value: 250,
+                value: 800,
                 message:
-                  "Description should be less than or equal to 250 characters",
+                  "Description should be less than or equal to 800 characters",
               },
             })}
           />
           {errors.description && (
             <ErrorText>{errors.description.message}</ErrorText>
           )}
-          <ButtonStyled type="submit">Create Note</ButtonStyled>
+          <ButtonStyled type="submit">
+            {id ? "Edit" : "Create"} Note
+          </ButtonStyled>
         </FormStyled>
       )}
     </>

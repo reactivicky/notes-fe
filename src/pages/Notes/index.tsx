@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 export interface NoteInterface {
   name: string;
   description?: string;
-  _id: string;
+  _id?: string;
 }
 
 export interface OptionType {
@@ -83,7 +83,7 @@ const Notes = () => {
     <Loader />
   ) : (
     notesArr.map(({ _id, name, description }) => (
-      <Note key={_id} onClick={() => handleNoteClick(_id)}>
+      <Note key={_id} onClick={() => handleNoteClick(_id ?? "")}>
         <NoteName>{name}</NoteName>
         {description && <NoteDescription>{description}</NoteDescription>}
       </Note>
