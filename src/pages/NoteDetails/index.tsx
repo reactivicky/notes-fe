@@ -17,26 +17,29 @@ const NoteDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const fetchNote = async (id?: string) => {
-    const note = await axios.get(`/notes/${id}`);
-    return note;
-  };
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["note", id],
-    queryFn: () => fetchNote(id),
-    enabled: !!id,
-  });
-  const noteData: NoteInterface | undefined = data?.data?.data?.note;
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormData>({
     defaultValues: {
-      title: noteData?.name ?? "",
-      description: noteData?.description ?? "",
+      title: "",
+      description: "",
     },
+  });
+
+  const fetchNote = async (id?: string) => {
+    const data = await axios.get(`/notes/${id}`);
+    const note: NoteInterface = data?.data?.data?.note;
+    reset({ title: note.name, description: note.description });
+    return note;
+  };
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["note", id],
+    queryFn: () => fetchNote(id),
+    enabled: !!id,
   });
 
   const onSubmit = (data: FormData) => {
@@ -58,7 +61,7 @@ const NoteDetails = () => {
       ) : (
         <FormStyled onSubmit={handleSubmit(onSubmit)} noValidate>
           <TitleInput
-            placeholder="Note Title"
+            placeholder={data ? "" : "Note Title"}
             type="text"
             id="title"
             {...register("title", {
@@ -71,7 +74,7 @@ const NoteDetails = () => {
           />
           {errors.title && <ErrorText>{errors.title.message}</ErrorText>}
           <DescriptionInput
-            placeholder="Note Description"
+            placeholder={data ? "" : "Note Description"}
             id="description"
             {...register("description", {
               required: "Description is required",
