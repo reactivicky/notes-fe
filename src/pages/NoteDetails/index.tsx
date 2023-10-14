@@ -36,6 +36,13 @@ const NoteDetails = () => {
     return note;
   };
 
+  const createNote = async ({ name, description }: NoteInterface) => {
+    return await axios.post(`/notes`, {
+      name,
+      description,
+    });
+  };
+
   const updateNote = async ({ name, description }: NoteInterface) => {
     await axios.patch(`/notes/${id}`, {
       name,
@@ -43,7 +50,8 @@ const NoteDetails = () => {
     });
   };
 
-  const { mutate } = useMutation(updateNote);
+  const { mutate: updateMutation } = useMutation(updateNote);
+  const { mutateAsync: createMutation } = useMutation(createNote);
 
   const { data, isLoading } = useQuery({
     queryKey: ["note", id],
@@ -51,8 +59,17 @@ const NoteDetails = () => {
     enabled: !!id,
   });
 
-  const onSubmit = (data: FormData) => {
-    mutate({ name: data.title, description: data.description });
+  const onSubmit = async (data: FormData) => {
+    if (id) {
+      updateMutation({ name: data.title, description: data.description });
+    } else {
+      const noteData = await createMutation({
+        name: data.title,
+        description: data.description,
+      });
+      const noteId = noteData?.data?.data?.note?._id ?? "";
+      navigate(`/edit-note/${noteId}`);
+    }
   };
 
   const handleBackClick = () => {
@@ -64,7 +81,7 @@ const NoteDetails = () => {
       <TaskbarContainer>
         <ButtonStyled onClick={handleBackClick}>Back to home</ButtonStyled>
       </TaskbarContainer>
-      {isLoading ? (
+      {id && isLoading ? (
         <Loader />
       ) : (
         <FormStyled onSubmit={handleSubmit(onSubmit)} noValidate>
