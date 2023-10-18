@@ -12,16 +12,20 @@ const Login = () => {
       setLoginState("sign-in");
     }
   };
-
+  const isLogin = loginState === "sign-in";
   const loginText = loginState === "sign-in" ? "up" : "in";
+  const btnText = isLogin ? "Login" : "Sign Up";
 
   return (
     <FormContainer>
       <StyledForm>
         <input type="text" placeholder="Username" />
         <input type="text" placeholder="Password" />
-        <ButtonStyled>Login</ButtonStyled>
-        <p onClick={toggleLogin}>Sign {loginText} instead</p>
+        {!isLogin && <input type="text" placeholder="Confirm Password" />}
+        <ButtonStyled>{btnText}</ButtonStyled>
+        <p>
+          <span onClick={toggleLogin}>Sign {loginText}</span> instead
+        </p>
       </StyledForm>
     </FormContainer>
   );

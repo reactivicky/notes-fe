@@ -9,7 +9,24 @@ export const FormContainer = styled.div`
 `;
 
 export const StyledForm = styled.form`
+  border: 1px solid ${colors.borderColor};
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding: 2rem;
+
+  input {
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+
+  p {
+    text-align: center;
+
+    span {
+      color: ${colors.primary};
+      cursor: pointer;
+      font-weight: 500;
+    }
+  }
 `;
