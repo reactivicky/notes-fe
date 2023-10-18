@@ -101,8 +101,8 @@ const Notes = () => {
   ) : (
     notesArr.map(({ _id, name, description }) => (
       <Note key={_id}>
-        <NoteName>
-          {name}{" "}
+        <div>
+          <NoteName>{name} </NoteName>
           <NoteBtns>
             <NoteBtn onClick={() => handleNoteClick(_id ?? "")}>
               <MdEdit />
@@ -111,7 +111,7 @@ const Notes = () => {
               <MdDelete />
             </NoteBtn>
           </NoteBtns>
-        </NoteName>
+        </div>
         {description && <NoteDescription>{description}</NoteDescription>}
       </Note>
     ))

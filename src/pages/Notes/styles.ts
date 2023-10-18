@@ -33,12 +33,14 @@ export const Note = styled.div`
 export const NoteName = styled.h3`
   font-size: 2rem;
   font-weight: 400;
+  margin: 0;
 `;
 
 export const NoteDescription = styled.p`
   overflow: auto;
   font-weight: 300;
   line-height: 150%;
+  margin: 0;
 `;
 
 export const NoteBtns = styled.div`
