@@ -13,7 +13,22 @@ interface FormData {
 const Login = () => {
   const [loginState, setLoginState] = useState<string>("sign-in");
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    reset,
+  } = useForm<FormData>({
+    defaultValues: {
+      username: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
   const toggleLogin = () => {
+    reset();
     if (loginState === "sign-in") {
       setLoginState("sign-up");
     } else {
@@ -23,19 +38,6 @@ const Login = () => {
   const isLogin = loginState === "sign-in";
   const loginText = loginState === "sign-in" ? "up" : "in";
   const btnText = isLogin ? "Login" : "Sign Up";
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<FormData>({
-    defaultValues: {
-      username: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
 
   const onSubmit = async (data: FormData) => {
     console.log(data);
