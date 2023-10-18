@@ -19,14 +19,14 @@ export const StyledForm = styled.form`
     font-size: 1rem;
     padding: 0.5rem;
   }
+`;
 
-  p {
-    text-align: center;
+export const NavigateText = styled.p`
+  text-align: center;
 
-    span {
-      color: ${colors.primary};
-      cursor: pointer;
-      font-weight: 500;
-    }
+  span {
+    color: ${colors.primary};
+    cursor: pointer;
+    font-weight: 500;
   }
 `;
