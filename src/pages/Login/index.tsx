@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
 import { ButtonStyled } from "@/components/Common/Button/styles";
 import { StyledForm, FormContainer, NavigateText } from "./styles";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { ErrorText } from "../NoteDetails/styles";
 import AuthContext from "@/context/AuthProvider";
 import axios from "@/api/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import useLogin from "@/hooks/useLogin";
 
 interface FormData {
   username: string;
@@ -14,7 +15,6 @@ interface FormData {
 }
 
 const Login = () => {
-  const [loginState, setLoginState] = useState<string>("sign-in");
   const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -32,30 +32,19 @@ const Login = () => {
     },
   });
 
-  const toggleLogin = () => {
-    reset();
-    if (loginState === "sign-in") {
-      setLoginState("sign-up");
-    } else {
-      setLoginState("sign-in");
-    }
-  };
-  const isLogin = loginState === "sign-in";
-  const loginText = loginState === "sign-in" ? "up" : "in";
-  const btnText = isLogin ? "Login" : "Sign Up";
+  const { btnText, isLogin, loginText, toggleLogin } = useLogin(reset);
 
   const onSubmit = async (data: FormData) => {
     const { username, password } = data;
     try {
       if (isLogin) {
         const res = await axios.post("/users/login", { username, password });
-        setAuth({ username, accessToken: res.data.accessToken });
+        setAuth({ username, accessToken: res?.data?.accessToken });
       } else {
         const res = await axios.post("/users/signup", { username, password });
-        console.log(res);
-        setAuth({ username, accessToken: res.data.data.accessToken });
+        setAuth({ username, accessToken: res?.data?.data?.accessToken });
       }
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (e) {
       console.log(e);
     }
