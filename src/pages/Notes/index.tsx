@@ -18,6 +18,7 @@ import { ButtonStyled } from "@/components/Common/Button/styles";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAxiosOptions from "@/hooks/useAxiosOptions";
+import useAuth from "@/hooks/useAuth";
 
 export interface NoteInterface {
   name: string;
@@ -39,6 +40,7 @@ const options: OptionType[] = [
 const Notes = () => {
   const navigate = useNavigate();
   const axiosOptions = useAxiosOptions();
+  const { auth } = useAuth();
 
   const [page, setPage] = useState<number>(1);
   const [filterText, setFilterText] = useState<string>("");
@@ -82,7 +84,7 @@ const Notes = () => {
   const { mutateAsync: deleteMutation } = useMutation(deleteNote);
 
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["notes", page, filterText, sortValue!.value],
+    queryKey: ["notes", page, filterText, sortValue!.value, auth.username],
     queryFn: () => fetchNotesList(page, filterText, sortValue!.value),
   });
 
