@@ -68,7 +68,7 @@ const Login = () => {
         />
         {errors.username && <ErrorText>{errors.username.message}</ErrorText>}
         <input
-          type="text"
+          type="password"
           placeholder="Password"
           {...register("password", {
             required: "Password is required",
@@ -77,7 +77,7 @@ const Login = () => {
         {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
         {!isLogin && (
           <input
-            type="text"
+            type="password"
             placeholder="Confirm Password"
             {...register("confirmPassword", {
               required: "Password is required",
