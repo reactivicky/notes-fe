@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
 import { ButtonStyled } from "@/components/Common/Button/styles";
 import { StyledForm, FormContainer, NavigateText } from "./styles";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ErrorText } from "../NoteDetails/styles";
+import AuthContext from "@/context/AuthProvider";
+import axios from "@/api/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   username: string;
@@ -12,6 +15,8 @@ interface FormData {
 
 const Login = () => {
   const [loginState, setLoginState] = useState<string>("sign-in");
+  const { setAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -40,7 +45,20 @@ const Login = () => {
   const btnText = isLogin ? "Login" : "Sign Up";
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
+    const { username, password } = data;
+    try {
+      if (isLogin) {
+        const res = await axios.post("/users/login", { username, password });
+        setAuth({ username, accessToken: res.data.accessToken });
+      } else {
+        const res = await axios.post("/users/signup", { username, password });
+        console.log(res);
+        setAuth({ username, accessToken: res.data.data.accessToken });
+      }
+      navigate("/");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

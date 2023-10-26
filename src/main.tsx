@@ -10,6 +10,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "./index.css";
+import { AuthProvider } from "./context/AuthProvider";
 
 const queryClient = new QueryClient();
 
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </BrowserRouter>
