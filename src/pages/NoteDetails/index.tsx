@@ -8,6 +8,7 @@ import { ButtonStyled } from "@/components/Common/Button/styles";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import Loader from "@/components/Common/Loader";
 import { type NoteInterface } from "../Notes";
+import useAxiosOptions from "@/hooks/useAxiosOptions";
 
 interface FormData {
   title: string;
@@ -17,6 +18,7 @@ interface FormData {
 const NoteDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const axiosOptions = useAxiosOptions();
 
   const {
     register,
@@ -31,24 +33,32 @@ const NoteDetails = () => {
   });
 
   const fetchNote = async (id?: string) => {
-    const data = await axios.get(`/notes/${id}`);
+    const data = await axios.get(`/notes/${id}`, axiosOptions);
     const note: NoteInterface = data?.data?.data?.note;
     reset({ title: note.name, description: note.description });
     return note;
   };
 
   const createNote = async ({ name, description }: NoteInterface) => {
-    return await axios.post(`/notes`, {
-      name,
-      description,
-    });
+    return await axios.post(
+      `/notes`,
+      {
+        name,
+        description,
+      },
+      axiosOptions
+    );
   };
 
   const updateNote = async ({ name, description }: NoteInterface) => {
-    await axios.patch(`/notes/${id}`, {
-      name,
-      description,
-    });
+    await axios.patch(
+      `/notes/${id}`,
+      {
+        name,
+        description,
+      },
+      axiosOptions
+    );
   };
 
   const { mutate: updateMutation } = useMutation(updateNote);

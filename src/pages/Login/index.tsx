@@ -1,14 +1,13 @@
 import { useForm } from "react-hook-form";
 import { ButtonStyled } from "@/components/Common/Button/styles";
 import { StyledForm, FormContainer, NavigateText } from "./styles";
-import { useContext } from "react";
 import { ErrorText } from "../NoteDetails/styles";
-import AuthContext from "@/context/AuthProvider";
 import axios from "@/api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import useLogin from "@/hooks/useLogin";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
+import useAuth from "@/hooks/useAuth";
 
 interface FormData {
   username: string;
@@ -17,7 +16,7 @@ interface FormData {
 }
 
 const Login = () => {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth } = useAuth();
   const navigate = useNavigate();
 
   const {

@@ -17,6 +17,7 @@ import { useState } from "react";
 import { ButtonStyled } from "@/components/Common/Button/styles";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import useAxiosOptions from "@/hooks/useAxiosOptions";
 
 export interface NoteInterface {
   name: string;
@@ -37,6 +38,7 @@ const options: OptionType[] = [
 
 const Notes = () => {
   const navigate = useNavigate();
+  const axiosOptions = useAxiosOptions();
 
   const [page, setPage] = useState<number>(1);
   const [filterText, setFilterText] = useState<string>("");
@@ -68,12 +70,13 @@ const Notes = () => {
         text: filterText,
         sort: sortBy,
       },
+      ...axiosOptions,
     });
     return res;
   };
 
   const deleteNote = async (id: string) => {
-    await axios.delete(`/notes/${id}`);
+    await axios.delete(`/notes/${id}`, axiosOptions);
   };
 
   const { mutateAsync: deleteMutation } = useMutation(deleteNote);
