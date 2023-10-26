@@ -7,6 +7,8 @@ import AuthContext from "@/context/AuthProvider";
 import axios from "@/api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import useLogin from "@/hooks/useLogin";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 interface FormData {
   username: string;
@@ -45,8 +47,13 @@ const Login = () => {
         setAuth({ username, accessToken: res?.data?.data?.accessToken });
       }
       navigate("/", { replace: true });
-    } catch (e) {
-      console.log(e);
+    } catch (e: unknown) {
+      const err = e as AxiosError;
+      if (err.response?.status === 409) {
+        toast.error("User already exists");
+      } else {
+        toast.error("Something went wrong");
+      }
     }
   };
 
